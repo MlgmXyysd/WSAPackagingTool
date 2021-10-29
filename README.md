@@ -22,6 +22,10 @@ Allows you to unpack WSA's Msixbundle and distribute it after packaging.
 - Just drag msixbundle file to `install.cmd` (or use `install <msixbundle>` command).
 - Make sure that there is no old version of WSA.
 
+## Feedback
+- Telegram: [@WSA_Community](https://t.me/wsa_community)
+- GitHub: [Issues](https://github.com/WSA-Community/WSAPackageTool/issues)
+
 ## TO-DOs
 
 - [ ] Unpack: Automatically identify Msix and Msixbundle.
