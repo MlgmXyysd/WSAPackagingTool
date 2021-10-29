@@ -43,6 +43,10 @@ Allows you to unpack WSA's Msixbundle and distribute it after packaging.
 ## References
 - Nah, too lazy to write for the time being.
 
+## Credits
+- [MlgmXyysd](https://github.com/MlgmXyysd)
+- [XiaoMengXinX](https://github.com/XiaomengxinX)
+
 ## License
 
 No license during WIP. All rights are reserved.
