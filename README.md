@@ -7,7 +7,7 @@ Allows you to unpack WSA's Msixbundle and distribute it after packaging.
 ## Requirements
 
 - Windows 10+
-- Windows Software Development Kit (The required tools have been built in. For details, see [librares](librares/README.md).)
+- Windows Software Development Kit (The required tools have been built in. For details, see [libraries](libraries/README.md).)
 - Powershell
 
 ## How to use
