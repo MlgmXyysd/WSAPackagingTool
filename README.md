@@ -6,7 +6,7 @@ Allows you to unpack WSA's Msixbundle and distribute it after packaging.
 
 ## Requirements
 
-- Windows 11
+- Windows 10+
 - Windows Software Development Kit (The required tools have been built in. For details, see [librares](librares/README.md).)
 - Powershell
 
@@ -30,6 +30,7 @@ Allows you to unpack WSA's Msixbundle and distribute it after packaging.
 - [ ] Repack: Integrate certificate with install.cmd.
 - [ ] Repack: Move out stuffs to `out` folder.
 - [ ] Install: Detect and process installed older versions. (It's not just uninstallation)
+- [ ] Libraries: Add multi architecture from WDK.
 
 ## Changelog
 - 1.0:
