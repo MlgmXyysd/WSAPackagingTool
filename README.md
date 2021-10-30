@@ -2,7 +2,7 @@
 
 **WIP Project**
 
-Allows you to unpack WSA's Msixbundle and distribute it after packaging.
+Allows you to modify WSA's Msixbundle and distribute it.
 
 ## Requirements
 

@@ -59,6 +59,10 @@ if not "%WSAPublisher%" == "CN=Microsoft Corporation, O=Microsoft Corporation, L
 )
 for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBundleManifest.xml;$p.Bundle.Packages.Package.FileName"') do (
 	echo [-] Processing %%i...
+	if not exist ".\temp\%%i" (
+		echo [#] Error: Incomplete Msixbundle package.
+		goto :LATE_CLEAN
+	)
 	call ".\libraries\makeappx.exe" unpack /p ".\temp\%%i" /d temp\%%i_ext
 	del /f /q ".\temp\%%i" >nul 2>nul
 )

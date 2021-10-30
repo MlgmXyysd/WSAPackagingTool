@@ -70,6 +70,10 @@ if not exist ".\libraries\WSA.cer" (
 )
 for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBundleManifest.xml;$p.Bundle.Packages.Package.FileName"') do (
 	echo [-] Processing %%i...
+	if not exist ".\temp\%%i_ext\AppxManifest.xml" (
+		echo [#] Error: Incomplete unpack project.
+		goto :LATE_CLEAN
+	)
 	call ".\libraries\makeappx.exe" pack /o /p ".\temp\%%i" /d temp\%%i_ext
 	rd /s /q ".\temp\%%i_ext" >nul 2>nul
 )
