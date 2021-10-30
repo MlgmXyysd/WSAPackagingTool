@@ -26,8 +26,8 @@ if not exist ".\libraries\split.exe" (
 	echo [#] Error: Split not found.
 	goto :EXIT
 )
-if not exist ".\libraries\split.exe" (
-	echo [#] Error: Split not found.
+if not exist ".\libraries\install.cmd" (
+	echo [#] Error: Installation utility template not found.
 	goto :EXIT
 )
 setlocal ENABLEDELAYEDEXPANSION
@@ -68,6 +68,7 @@ if not exist ".\libraries\WSA.cer" (
 	del /f /q ".\libraries\WSA.pfx" >nul 2>nul
 	goto :CERT_NOT_FOUND
 )
+echo [-] Creating msix...
 for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBundleManifest.xml;$p.Bundle.Packages.Package.FileName"') do (
 	echo [-] Processing %%i...
 	if not exist ".\temp\%%i_ext\AppxManifest.xml" (
@@ -83,7 +84,7 @@ echo [-] Creating msixbundle...
 call ".\libraries\makeappx.exe" bundle /o /bv %WSAVersion% /p "out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" /d temp
 echo [-] Processing msixbundle...
 call ".\libraries\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd ".\out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" >nul 2>nul
-echo [-] Generating install utility...
+echo [-] Generating installation utility...
 set /a LINE=0
 setlocal ENABLEDELAYEDEXPANSION
 for /F "delims=" %%i in (.\libraries\install.cmd) do (
