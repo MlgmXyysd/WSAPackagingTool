@@ -70,12 +70,11 @@ if not exist ".\out\WSA.cer" (
 	del /f /q ".\libraries\WSA.pfx" >nul 2>nul
 	goto :CERT_NOT_FOUND
 )
-echo [-] Processing x64 application...
-call ".\libraries\makeappx.exe" pack /o /p ".\temp\%Package_x64%" /d temp\%Package_x64%_ext
-rd /s /q ".\temp\%Package_x64%_ext" >nul 2>nul
-echo [-] Processing arm64 application...
-call ".\libraries\makeappx.exe" pack /o /p ".\temp\%Package_arm64%" /d temp\%Package_arm64%_ext
-rd /s /q ".\temp\%Package_arm64%_ext" >nul 2>nul
+for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBundleManifest.xml;$p.Bundle.Packages.Package.FileName"') do (
+	echo [-] Processing %%i...
+	call ".\libraries\makeappx.exe" pack /o /p ".\temp\%%i" /d temp\%%i_ext
+	rd /s /q ".\temp\%%i_ext" >nul 2>nul
+)
 echo [-] Processing msix...
 call ".\libraries\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd ".\temp\%Package_arm64%" >nul 2>nul
 for %%i in (.\temp\*.msix) do (call ".\libraries\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd "%%~i" >nul 2>nul)

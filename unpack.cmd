@@ -57,22 +57,11 @@ if not "%WSAPublisher%" == "CN=Microsoft Corporation, O=Microsoft Corporation, L
 	echo [#] Error: Package is provided by unauthenticated publisher.
 	goto :LATE_CLEAN
 )
-for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBundleManifest.xml;$a=$p.Bundle.Packages.Package|Where-Object{$_.Type -match 'application'}|Where-Object{$_.Architecture -match 'x64'};$a.FileName"') do (set Package_x64=%%i)
-for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBundleManifest.xml;$a=$p.Bundle.Packages.Package|Where-Object{$_.Type -match 'application'}|Where-Object{$_.Architecture -match 'arm64'};$a.FileName"') do (set Package_arm64=%%i)
-if not exist ".\temp\%Package_x64%" (
-	echo [#] Error: Incomplete WSA msixbundle package.
-	goto :LATE_CLEAN
+for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBundleManifest.xml;$p.Bundle.Packages.Package.FileName"') do (
+	echo [-] Processing %%i...
+	call ".\libraries\makeappx.exe" unpack /p ".\temp\%%i" /d temp\%%i_ext
+	del /f /q ".\temp\%%i" >nul 2>nul
 )
-if not exist ".\temp\%Package_arm64%" (
-	echo [#] Error: Incomplete WSA msixbundle package.
-	goto :LATE_CLEAN
-)
-echo [-] Processing x64 application...
-call ".\libraries\makeappx.exe" unpack /p ".\temp\%Package_x64%" /d temp\%Package_x64%_ext
-del /f /q ".\temp\%Package_x64%" >nul 2>nul
-echo [-] Processing arm64 application...
-call ".\libraries\makeappx.exe" unpack /p ".\temp\%Package_arm64%" /d temp\%Package_arm64%_ext
-del /f /q ".\temp\%Package_arm64%" >nul 2>nul
 echo [*] Now you can do you want to do in "temp".
 goto :EXIT
 :LATE_CLEAN

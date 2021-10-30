@@ -28,14 +28,16 @@ Allows you to unpack WSA's Msixbundle and distribute it after packaging.
 
 ## TO-DOs
 
-- [ ] Unpack: Automatically identify Msix and Msixbundle.
-- [ ] Unpack: Unpack all sub Msix in the manifest.
-- [x] Repack: Automatically generate cer certificate. (Require Powershell 6.1+)
+- [ ] Unpack & Repack: Automatically identify Msix and Msixbundle.
 - [ ] Repack: Integrate certificate with install.cmd.
-- [x] Repack: Store certificates in `libraries` to keep the home path clean.
-- [x] Repack: Move output stuffs to `out` folder.
-- [x] Install: Detect and process installed previous versions. (It's not just uninstallation)
+- [ ] Repack: Specify output path.
+- [ ] Repack: Specify output file name.
 - [ ] Libraries: Add multi architecture from WDK.
+- [x] ~~Unpack & Repack: Process all sub Msix in the manifest.~~
+- [x] ~~Repack: Automatically generate cer certificate. (Require Powershell 6.1+)~~
+- [x] ~~Repack: Store certificates in `libraries` to keep the home path clean.~~
+- [x] ~~Repack: Move output stuffs to `out` folder.~~
+- [x] ~~Install: Detect and process installed previous versions. (It's not just uninstallation)~~
 
 ## Changelog
 - 1.0:
