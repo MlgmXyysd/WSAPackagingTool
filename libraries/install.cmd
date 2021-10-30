@@ -2,9 +2,9 @@
 ::
 :: Copyright (C) 2002-2022 MlgmXyysd. <mlgmxyysd@meowcat.org> All Rights Reserved.
 ::
-title Install - WSAPackageTool - MlgmXyysd
-echo Install - WSAPackageTool v1.0 By MlgmXyysd
-echo https://github.com/WSA-Community/WSAPackageTool
+title Install - WSAPackagingTool - MlgmXyysd
+echo Install - WSAPackagingTool v1.0 By MlgmXyysd
+echo https://github.com/WSA-Community/WSAPackagingTool
 echo *********************************************
 echo.
 cd /d "%~dp0"

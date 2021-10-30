@@ -1,4 +1,4 @@
-# WSAMsixbundleTool
+# WSAPackagingTool
 
 ## Libraries
 This is where the binaries for operating the package are stored.
@@ -22,7 +22,6 @@ They can be obtained from [Windows Software Development Kit](https://developer.m
 
 ## Info
 Current binaries version information:
-
 - Windows SDK for Windows 11
 - Version: `10.0.22000.194`
 - Arch: `x86` `32-bit`
