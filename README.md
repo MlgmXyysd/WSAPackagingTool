@@ -8,7 +8,7 @@ Allows you to unpack WSA's Msixbundle and distribute it after packaging.
 
 - Windows 10+
 - Windows Software Development Kit (The required tools have been built in. For details, see [libraries](libraries/README.md).)
-- Powershell
+- Powershell 6+ (Unpack & Install require Powershell 5.1+)
 
 ## How to use
 
@@ -30,7 +30,7 @@ Allows you to unpack WSA's Msixbundle and distribute it after packaging.
 
 - [ ] Unpack: Automatically identify Msix and Msixbundle.
 - [ ] Unpack: Unpack all sub Msix in the manifest.
-- [ ] Repack: Automatically generate cer certificate. (Require Powershell 6.1+)
+- [x] Repack: Automatically generate cer certificate. (Require Powershell 6.1+)
 - [ ] Repack: Integrate certificate with install.cmd.
 - [x] Repack: Store certificates in `libraries` to keep the home path clean.
 - [x] Repack: Move output stuffs to `out` folder.

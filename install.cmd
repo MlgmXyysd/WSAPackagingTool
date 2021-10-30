@@ -10,8 +10,19 @@ echo.
 cd /d "%~dp0"
 if not exist ".\WSA.cer" (
 	echo [!] Error: Certificate not found.
-	pause
-	goto :EOF
+	goto :EXIT
+)
+call pwsh -v >nul 2>nul
+if not "%errorlevel%" == "9009" (
+	set PS=call pwsh -Command
+) else (
+	call powershell -v >nul 2>nul
+	if not "%errorlevel%" == "9009" (
+		set PS=call powershell
+	) else (
+		echo [!] Error: Powershell not found.
+		goto :EXIT
+	)
 )
 set IS_ADMIN=%~1
 set CMD_LINE="%~1"
@@ -26,20 +37,21 @@ goto :COMMAND_LINE
 :COMMAND_LINE_DONE
 if not "%IS_ADMIN%" == "am_admin" (
 	echo [!] Currently running with non Administrator privileges, raising...
-	powershell Start-Process -Verb runAs -FilePath '"%~0"' -ArgumentList 'am_admin %CMD_LINE%'
+	%PS% Start-Process -Verb runAs -FilePath '"%~0"' -ArgumentList 'am_admin %CMD_LINE%'
 	goto :EOF
 )
 shift /1
 if exist "%PACKAGE%" (
 	echo [-] Installing package...
-	powershell "$r='HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock';if(-not(Test-Path -Path $r)){New-Item -Path $r -ItemType Directory -Force};if(-not(Get-ItemProperty -Path $r -Name AllowDevelopmentWithoutDevLicense)){New-ItemProperty -Path $r -Name AllowDevelopmentWithoutDevLicense -PropertyType DWORD -Value 1}else{Set-ItemProperty -Path $r -Name AllowDevelopmentWithoutDevLicense -Value 1}" >nul 2>nul
+	%PS% "$r='HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock';if(-not(Test-Path -Path $r)){New-Item -Path $r -ItemType Directory -Force};if(-not(Get-ItemProperty -Path $r -Name AllowDevelopmentWithoutDevLicense)){New-ItemProperty -Path $r -Name AllowDevelopmentWithoutDevLicense -PropertyType DWORD -Value 1}else{Set-ItemProperty -Path $r -Name AllowDevelopmentWithoutDevLicense -Value 1}" >nul 2>nul
 	certutil -addstore root ".\WSA.cer" >nul 2>nul
-	powershell "Add-AppxPackage '%PACKAGE%'"
+	%PS% "Add-AppxPackage '%PACKAGE%'"
 	echo [*] Install complete.
-	pause
-	goto :EOF
+	goto :EXIT
 ) else (
-	echo [!] Error: You need specify a msixbundle package.
-	pause
-	goto :EOF
+	echo [!] Error: You need specify a valid Msixbundle package.
+	goto :EXIT
 )
+:EXIT
+pause
+goto :EOF
