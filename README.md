@@ -7,20 +7,19 @@ Allows you to unpack WSA's Msixbundle and distribute it after packaging.
 ## Requirements
 
 - Windows 10+
-- Windows Software Development Kit (The required tools have been built in. For details, see [libraries](libraries/README.md).)
+- Windows Software Development Kit (The required tools have been built in. For more details, see [libraries](libraries/README.md).)
 - Powershell 6+ (Unpack requires Powershell 5.1+, Install needs Powershell 5.1 to work.)
 
 ## How to use
 
-1. Drag WSA Msixbundle to unpack.cmd (or use `unpack <msixbundle>` command) to unpack.
+1. Drag WSA Msixbundle to `unpack.cmd` (or use `unpack <msixbundle>` command) to unpack.
 2. Feel free modify package in `temp` folder. (Such as GappsScript or MagiskScript, or you can do something cooler.)
-3. Run repack.cmd.
-4. The `WSA.cer`, `*_repack.msixbundle` and `install.cmd` is the out file.
+3. Run `repack.cmd`.
+4. The output files are in `out` folder.
 
 ## How to install
 
-- Just drag msixbundle file to `install.cmd` (or use `install <msixbundle>` command).
-- Make sure that there is no old version of WSA.
+- Just drag Msixbundle file to `install.cmd` (or use `install <msixbundle>` command).
 
 ## Feedback
 - Telegram: [@WSA_Community](https://t.me/wsa_community)
