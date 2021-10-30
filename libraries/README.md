@@ -1,8 +1,9 @@
 # WSAMsixbundleTool
 
 ## Libraries
+This is where the binaries for operating the package are stored.
 
-This is where the binaries for operating the package are stored. They can be obtained from [Windows Software Development Kit](https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/) and [Git for Windows](https://git-scm.com/download/win).
+They can be obtained from [Windows Software Development Kit](https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/) and [Git for Windows](https://git-scm.com/download/win).
 
 - Windows SDK Signing Tools for Desktop Apps
   - `signtool.exe`
@@ -20,7 +21,6 @@ This is where the binaries for operating the package are stored. They can be obt
   - `split.exe`
 
 ## Info
-
 Current binaries version information:
 
 - Windows SDK for Windows 11
@@ -29,5 +29,4 @@ Current binaries version information:
 - Git for Windows: `2.33.1`
 
 ## Notes
-
-- `install.cmd` is pre-built, do not modify.
+- `install.cmd` is installation utility template, do not modify.
