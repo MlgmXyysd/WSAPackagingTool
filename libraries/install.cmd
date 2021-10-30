@@ -40,6 +40,7 @@ echo [-] Installing package...
 del /f /q ".\WSA.cer" >nul 2>nul
 del /f /q ".\WSA.pem" >nul 2>nul
 :: ----------Certificate----------
+:: -------------------------------
 certutil -decode ".\WSA.pem" ".\WSA.cer" >nul 2>nul
 del /f /q ".\WSA.pem" >nul 2>nul
 certutil -addstore root ".\WSA.cer" >nul 2>nul
