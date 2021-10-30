@@ -47,7 +47,7 @@ certutil -addstore root ".\WSA.cer" >nul 2>nul
 del /f /q ".\WSA.cer" >nul 2>nul
 for /F "delims=" %%i in ('%PS% "(Get-AppxPackage -Name 'MicrosoftCorporationII.WindowsSubsystemForAndroid').PackageFullName"') do (set INSTALLED=%%i)
 if not "%INSTALLED%" == "" (
-	echo [*] Processing previous version...
+	echo [-] Processing previous version...
 	rd /s /q ".\temp" >nul 2>nul
 	mkdir ".\temp" >nul 2>nul
 	xcopy "%LocalAppData%\Packages\MicrosoftCorporationII.WindowsSubsystemForAndroid_8wekyb3d8bbwe\*" ".\temp\" /E /Y >nul 2>nul
