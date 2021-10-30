@@ -47,7 +47,25 @@ Allows you to unpack WSA's Msixbundle and distribute it after packaging.
 - Nah, too lazy to write for the time being.
 
 ## References
-- Nah, too lazy to write for the time being.
+- https://docs.microsoft.com/en-us/powershell/module/appx/get-appxpackage
+- https://docs.microsoft.com/en-us/powershell/module/appx/add-appxpackage
+- https://docs.microsoft.com/en-us/powershell/module/appx/remove-appxpackage
+- https://docs.microsoft.com/en-us/powershell/module/pki/export-certificate
+- https://docs.microsoft.com/en-us/powershell/module/pki/export-pfxcertificate
+- https://docs.microsoft.com/en-us/powershell/module/pki/new-selfsignedcertificate
+- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-pfxcertificate
+- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/convertto-securestring
+- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-content
+- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-childitem
+- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/test-path
+- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/new-item
+- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-itemproperty
+- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/new-itemproperty
+- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-itemproperty
+- https://docs.microsoft.com/en-us/windows/msix/package/create-app-package-with-makeappx-tool
+- https://docs.microsoft.com/en-us/windows/msix/package/create-certificate-package-signing
+- https://docs.microsoft.com/en-us/windows/msix/package/sign-app-package-using-signtool
+- https://docs.microsoft.com/en-us/uwp/schemas/bundlemanifestschema/bundle-manifest
 
 ## Credits
 - [MlgmXyysd](https://github.com/MlgmXyysd)

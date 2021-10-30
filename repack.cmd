@@ -41,16 +41,6 @@ if not "%WSAPublisher%" == "CN=Microsoft Corporation, O=Microsoft Corporation, L
 	echo [#] Error: Package unpack project is provided by unauthenticated publisher.
 	goto :LATE_CLEAN
 )
-for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBundleManifest.xml;$a=$p.Bundle.Packages.Package|Where-Object{$_.Type -match 'application'}|Where-Object{$_.Architecture -match 'x64'};$a.FileName"') do (set Package_x64=%%i)
-for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBundleManifest.xml;$a=$p.Bundle.Packages.Package|Where-Object{$_.Type -match 'application'}|Where-Object{$_.Architecture -match 'arm64'};$a.FileName"') do (set Package_arm64=%%i)
-if not exist ".\temp\%Package_x64%_ext\AppxManifest.xml" (
-	echo [#] Error: Incomplete msixbundle package unpack project.
-	goto :LATE_CLEAN
-)
-if not exist ".\temp\%Package_arm64%_ext\AppxManifest.xml" (
-	echo [#] Error: Incomplete msixbundle package unpack project.
-	goto :LATE_CLEAN
-)
 if not exist ".\libraries\WSA.pfx" (
 	goto :CERT_NOT_FOUND
 ) else (
@@ -76,7 +66,6 @@ for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBund
 	rd /s /q ".\temp\%%i_ext" >nul 2>nul
 )
 echo [-] Processing msix...
-call ".\libraries\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd ".\temp\%Package_arm64%" >nul 2>nul
 for %%i in (.\temp\*.msix) do (call ".\libraries\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd "%%~i" >nul 2>nul)
 echo [-] Creating msixbundle...
 call ".\libraries\makeappx.exe" bundle /o /bv %WSAVersion% /p "out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" /d temp
