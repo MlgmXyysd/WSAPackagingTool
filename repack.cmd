@@ -9,6 +9,7 @@ echo *********************************************
 echo.
 cd /d "%~dp0"
 mkdir ".\out" >nul 2>nul
+del /f /q ".\libraries\WSA.cer" >nul 2>nul
 if not exist ".\temp\AppxMetadata\AppxBundleManifest.xml" (
 	echo [#] Error: You need do unpack first.
 	goto :EXIT
@@ -19,6 +20,14 @@ if not exist ".\libraries\signtool.exe" (
 )
 if not exist ".\libraries\makeappx.exe" (
 	echo [#] Error: MakeAppx not found.
+	goto :EXIT
+)
+if not exist ".\libraries\split.exe" (
+	echo [#] Error: Split not found.
+	goto :EXIT
+)
+if not exist ".\libraries\split.exe" (
+	echo [#] Error: Split not found.
 	goto :EXIT
 )
 setlocal ENABLEDELAYEDEXPANSION
@@ -48,14 +57,13 @@ if not exist ".\libraries\WSA.pfx" (
 )
 :CERT_NOT_FOUND
 echo [-] Generating certificate...
-del /f /q ".\out\WSA.cer" >nul 2>nul
 for /F "delims=" %%i in ('%PS% "New-SelfSignedCertificate -Type Custom -Subject 'CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US' -KeyUsage DigitalSignature -FriendlyName 'MlgmXyysd WSA Certificate' -CertStoreLocation 'Cert:\CurrentUser\My' -NotAfter (Get-Date).AddYears(233) -TextExtension @('2.5.29.37={text}1.3.6.1.5.5.7.3.3', '2.5.29.19={text}')"') do (set thumbprint=%%i)
 set thumbprint=%thumbprint:~0,40%
 %PS% "$c=Get-ChildItem -Path 'Cert:\CurrentUser\My\%thumbprint%';$p=ConvertTo-SecureString -String 'mlgmxyysd' -Force -AsPlainText;Export-PfxCertificate -cert $c -FilePath '.\libraries\WSA.pfx' -Password $p; Remove-Item 'Cert:\CurrentUser\My\%thumbprint%'" >nul 2>nul
 :CERT_FOUND
 echo [-] Checking certificate availability...
-%PS% "$p=ConvertTo-SecureString -String 'mlgmxyysd' -Force -AsPlainText;Get-PfxCertificate -FilePath '.\libraries\WSA.pfx' -Password $p|Export-Certificate -FilePath '.\out\WSA.cer' -Type CERT" >nul 2>nul
-if not exist ".\out\WSA.cer" (
+%PS% "$p=ConvertTo-SecureString -String 'mlgmxyysd' -Force -AsPlainText;Get-PfxCertificate -FilePath '.\libraries\WSA.pfx' -Password $p|Export-Certificate -FilePath '.\libraries\WSA.cer' -Type CERT" >nul 2>nul
+if not exist ".\libraries\WSA.cer" (
 	echo [#] Certificate test fail.
 	del /f /q ".\libraries\WSA.pfx" >nul 2>nul
 	goto :CERT_NOT_FOUND
@@ -71,6 +79,32 @@ echo [-] Creating msixbundle...
 call ".\libraries\makeappx.exe" bundle /o /bv %WSAVersion% /p "out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" /d temp
 echo [-] Processing msixbundle...
 call ".\libraries\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd ".\out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" >nul 2>nul
+echo [-] Generating install utility...
+set /a LINE=0
+setlocal ENABLEDELAYEDEXPANSION
+for /F "delims=" %%i in (.\libraries\install.cmd) do (
+	set /a LINE=!LINE!+1
+	if "%%i" == ":: ----------Certificate----------" (
+		goto :LOOP_BREAK_1
+	)
+)
+setlocal DISABLEDELAYEDEXPANSION
+:LOOP_BREAK_1
+call ".\libraries\split.exe" -l %LINE% -d ".\libraries\install.cmd" ".\out\INSTALL_TEMP" >nul 2>nul
+call certutil -encode ".\libraries\WSA.cer" ".\libraries\WSA.pem" >nul 2>nul
+del /f /q ".\libraries\WSA.cer" >nul 2>nul
+del /f /q ".\libraries\cert.cmd" >nul 2>nul
+for /F "delims=" %%i in (.\libraries\WSA.pem) do (
+	echo echo %%i^>^>".\WSA.pem">>".\libraries\cert.cmd"
+)
+del /f /q ".\libraries\WSA.pem" >nul 2>nul
+copy /b ".\out\INSTALL_TEMP00"+".\libraries\cert.cmd" ".\out\install.cmd" >nul 2>nul
+del /f /q ".\out\INSTALL_TEMP00" >nul 2>nul
+del /f /q ".\libraries\cert.cmd" >nul 2>nul
+for /F "delims=" %%i in ('%PS% "(Get-ChildItem '.\out' INSTALL_TEMP*).Name"') do (
+	copy /b ".\out\install.cmd"+".\out\%%i" ".\out\install.cmd" >nul 2>nul
+	del /f /q ".\out\%%i" >nul 2>nul
+)
 echo [*] Done, new package is "out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle".
 goto :LATE_CLEAN
 :LATE_CLEAN
