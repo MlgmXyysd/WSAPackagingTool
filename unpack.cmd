@@ -2,7 +2,6 @@
 ::
 :: Copyright (C) 2002-2022 MlgmXyysd. <mlgmxyysd@meowcat.org> All Rights Reserved.
 ::
-setlocal ENABLEDELAYEDEXPANSION
 title Unpack - WSAPackageTool - MlgmXyysd
 echo Unpack - WSAPackageTool v1.0 By MlgmXyysd
 echo https://github.com/WSA-Community/WSAPackageTool
@@ -27,21 +26,19 @@ if not "%errorlevel%" == "9009" (
 	)
 )
 setlocal DISABLEDELAYEDEXPANSION
-if exist "%~1" (
-	if /i "%~x1" == ".msixbundle" (
-		echo [-] Cleaning temp file...
-		rd /s /q ".\temp" >nul 2>nul
-		mkdir ".\temp" >nul 2>nul
-		echo [-] Extracting msixbundle...
-		call ".\libraries\makeappx.exe" unbundle /p "%~1" /d temp
-	) else (
-		echo [#] Error: File is not a Msixbundle package.
-		goto :LATE_CLEAN
-	)
-) else (
+if not exist "%~1" (
 	echo [#] Error: You need specify a valid Msixbundle package.
 	goto :LATE_CLEAN
 )
+if /i not "%~x1" == ".msixbundle" (
+	echo [#] Error: File is not a Msixbundle package.
+	goto :LATE_CLEAN
+)
+echo [-] Cleaning temp file...
+rd /s /q ".\temp" >nul 2>nul
+mkdir ".\temp" >nul 2>nul
+echo [-] Extracting msixbundle...
+call ".\libraries\makeappx.exe" unbundle /p "%~1" /d temp
 if not exist ".\temp\AppxMetadata\AppxBundleManifest.xml" (
 	echo [#] Error: Malformed msixbundle.
 	goto :LATE_CLEAN
