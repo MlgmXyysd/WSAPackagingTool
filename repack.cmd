@@ -110,7 +110,13 @@ for /F "delims=" %%i in ('%PS% "(Get-ChildItem '.\out' INSTALL_TEMP*).Name"') do
 	copy /b ".\out\install.cmd"+".\out\%%i" ".\out\install.cmd" >nul 2>nul
 	del /f /q ".\out\%%i" >nul 2>nul
 )
-echo [*] Done, new package is "out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle".
+if not "%~1" == "" (
+	move /y "out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" "%~1" >nul 2>nul
+	set out=%~1
+) else (
+	set out=out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle
+)
+echo [*] Done, new package is "%out%".
 goto :LATE_CLEAN
 :LATE_CLEAN
 pause

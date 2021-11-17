@@ -25,44 +25,12 @@ Allows you to modify WSA's Msixbundle and distribute it.
 
 ## TO-DOs
 - [ ] Unpack & Repack: Automatically identify Msix and Msixbundle.
-- [ ] Repack: Specify output path.
-- [ ] Repack: Specify output file name.
 - [ ] Libraries: Add multi architecture from WDK.
 - [ ] Repack: Better way to generate installation utility instead of using Git Split.
-- [x] ~~Repack & Install: Integrate certificate with install.cmd.~~
-- [x] ~~Unpack & Repack: Process all sub Msix in the manifest.~~
-- [x] ~~Repack: Automatically generate cer certificate. (Require Powershell 6.1+)~~
-- [x] ~~Repack: Store certificates in `libraries` to keep the home path clean.~~
-- [x] ~~Repack: Move output stuffs to `out` folder.~~
-- [x] ~~Install: Detect and process installed previous versions. (It's not just uninstallation)~~
 
 ## Changelog
 - 1.0:
 	- First ver
-
-## Workaround
-- Nah, too lazy to write for the time being.
-
-## References
-- https://docs.microsoft.com/en-us/powershell/module/appx/get-appxpackage
-- https://docs.microsoft.com/en-us/powershell/module/appx/add-appxpackage
-- https://docs.microsoft.com/en-us/powershell/module/appx/remove-appxpackage
-- https://docs.microsoft.com/en-us/powershell/module/pki/export-certificate
-- https://docs.microsoft.com/en-us/powershell/module/pki/export-pfxcertificate
-- https://docs.microsoft.com/en-us/powershell/module/pki/new-selfsignedcertificate
-- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-pfxcertificate
-- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/convertto-securestring
-- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-content
-- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-childitem
-- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/test-path
-- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/new-item
-- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-itemproperty
-- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/new-itemproperty
-- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-itemproperty
-- https://docs.microsoft.com/en-us/windows/msix/package/create-app-package-with-makeappx-tool
-- https://docs.microsoft.com/en-us/windows/msix/package/create-certificate-package-signing
-- https://docs.microsoft.com/en-us/windows/msix/package/sign-app-package-using-signtool
-- https://docs.microsoft.com/en-us/uwp/schemas/bundlemanifestschema/bundle-manifest
 
 ## Credits
 - [MlgmXyysd](https://github.com/MlgmXyysd)
