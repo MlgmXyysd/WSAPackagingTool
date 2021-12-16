@@ -63,7 +63,7 @@ for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBund
 	call ".\libraries\makeappx.exe" unpack /p ".\temp\%%i" /d temp\%%i_ext
 	del /f /q ".\temp\%%i" >nul 2>nul
 )
-echo [*] Now you can do you want to do in "temp".
+echo [*] Now you can do you what you want to do in "temp".
 goto :EXIT
 :LATE_CLEAN
 pause
