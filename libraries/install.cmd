@@ -15,9 +15,9 @@ if not "%errorlevel%" == "9009" (
 	echo [#] Error: Powershell not found.
 	goto :EXIT
 )
-set IS_ADMIN=%~1
+set IS_ADMIN="%~1"
 set CMD_LINE="%~1"
-set PACKAGE=%~2
+set PACKAGE="%~2"
 :COMMAND_LINE
 shift /1
 if "%~1" == "" (
