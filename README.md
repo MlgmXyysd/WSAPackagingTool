@@ -1,8 +1,8 @@
 # WSAPackagingTool
 
-**WIP Project**
+**WIP Project / Public Test**
 
-Allows you to modify WSA's Msixbundle and distribute it.
+Allows you to modify WSA's Msixbundle and redistribute it.
 
 ## Requirements
 - Windows 10+
@@ -19,6 +19,9 @@ Allows you to modify WSA's Msixbundle and distribute it.
 ## How to install
 - Just drag Msixbundle file to `install.cmd` (or use `install <msixbundle>` command).
 
+## Tutorial Video
+- [Youtube](https://www.youtube.com/watch?v=54hpiwFQ20A)
+
 ## Feedback
 - Telegram: [@WSA_Community](https://t.me/wsa_community)
 - GitHub: [Issues](https://github.com/WSA-Community/WSAPackageTool/issues)
@@ -27,6 +30,7 @@ Allows you to modify WSA's Msixbundle and distribute it.
 - [ ] Unpack & Repack: Automatically identify Msix and Msixbundle.
 - [ ] Libraries: Add multi architecture from WDK.
 - [ ] Repack: Better way to generate installation utility instead of using Git Split.
+- [ ] PackagingTool: GUI
 
 ## Changelog
 - 1.0:
@@ -37,4 +41,4 @@ Allows you to modify WSA's Msixbundle and distribute it.
 - [XiaoMengXinX](https://github.com/XiaomengxinX)
 
 ## License
-No license during WIP. All rights are reserved.
+No license. All rights are reserved.
