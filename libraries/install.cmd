@@ -26,7 +26,7 @@ if "%~1" == "" (
 set CMD_LINE=%CMD_LINE% "%~1"
 goto :COMMAND_LINE
 :COMMAND_LINE_DONE
-if not "%IS_ADMIN%" == "am_admin" (
+if not %IS_ADMIN% == "am_admin" (
 	echo [#] Currently running with non Administrator privileges, raising...
 	%PS% Start-Process -Verb runAs -FilePath '"%~0"' -ArgumentList 'am_admin %CMD_LINE%'
 	goto :EOF
