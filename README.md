@@ -13,8 +13,9 @@ Allows you to modify WSA's Msixbundle and redistribute it.
 ## How to use
 1. Drag WSA Msixbundle to `unpack.cmd` (or use `unpack <msixbundle>` command) to unpack.
 2. Feel free modify package in `temp` folder. (Such as GappsScript or MagiskScript, or you can do something cooler.)
-3. Run `repack.cmd`.
-4. The output files are in `out` folder.
+3. Check your architecture.If your architecture is "x64", you should replace the "libraries" folder's content with "libraries_64" folder's content. (Temporary)
+4. Run `repack.cmd`.
+5. The output files are in `out` folder.
 
 ## How to install
 - Just drag Msixbundle file to `install.cmd` (or use `install <msixbundle>` command).
