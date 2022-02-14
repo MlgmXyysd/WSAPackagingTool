@@ -1,9 +1,9 @@
 @echo off
 ::
-:: Copyright (C) 2002-2022 MlgmXyysd. <mlgmxyysd@meowcat.org> All Rights Reserved.
+:: Copyright (C) 2002-2022 Jaida Wu (MlgmXyysd) <mlgmxyysd@meowcat.org> All Rights Reserved.
 ::
 title Unpack - WSAPackagingTool - MlgmXyysd
-echo Unpack - WSAPackagingTool v1.0 By MlgmXyysd
+echo Unpack - WSAPackagingTool v1.1 By MlgmXyysd
 echo https://github.com/WSA-Community/WSAPackagingTool
 echo *********************************************
 echo.

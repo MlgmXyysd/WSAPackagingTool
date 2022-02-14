@@ -1,9 +1,9 @@
 @echo off
 ::
-:: Copyright (C) 2002-2022 MlgmXyysd. <mlgmxyysd@meowcat.org> All Rights Reserved.
+:: Copyright (C) 2002-2022 Jaida Wu (MlgmXyysd) <mlgmxyysd@meowcat.org> All Rights Reserved.
 ::
 title Install - WSAPackagingTool - MlgmXyysd
-echo Install - WSAPackagingTool v1.0 By MlgmXyysd
+echo Install - WSAPackagingTool v1.1 By MlgmXyysd
 echo https://github.com/WSA-Community/WSAPackagingTool
 echo *********************************************
 echo.
@@ -40,7 +40,6 @@ echo [-] Installing package...
 del /f /q ".\WSA.cer" >nul 2>nul
 del /f /q ".\WSA.pem" >nul 2>nul
 :: ----------Certificate----------
-:: -------------------------------
 certutil -decode ".\WSA.pem" ".\WSA.cer" >nul 2>nul
 del /f /q ".\WSA.pem" >nul 2>nul
 certutil -addstore root ".\WSA.cer" >nul 2>nul

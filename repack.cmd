@@ -1,9 +1,9 @@
 @Echo off
 ::
-:: Copyright (C) 2002-2022 MlgmXyysd. <mlgmxyysd@meowcat.org> All Rights Reserved.
+:: Copyright (C) 2002-2022 Jaida Wu (MlgmXyysd) <mlgmxyysd@meowcat.org> All Rights Reserved.
 ::
 title Repack - WSAPackagingTool - MlgmXyysd
-echo Repack - WSAPackagingTool v1.0 By MlgmXyysd
+echo Repack - WSAPackagingTool v1.1 By MlgmXyysd
 echo https://github.com/WSA-Community/WSAPackagingTool
 echo *********************************************
 echo.
@@ -20,10 +20,6 @@ if not exist ".\libraries\signtool.exe" (
 )
 if not exist ".\libraries\makeappx.exe" (
 	echo [#] Error: MakeAppx not found.
-	goto :EXIT
-)
-if not exist ".\libraries\split.exe" (
-	echo [#] Error: Split not found.
 	goto :EXIT
 )
 if not exist ".\libraries\install.cmd" (
@@ -85,31 +81,10 @@ call ".\libraries\makeappx.exe" bundle /o /bv %WSAVersion% /p "out\%WSAName%_%WS
 echo [-] Processing msixbundle...
 call ".\libraries\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd ".\out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" >nul 2>nul
 echo [-] Generating installation utility...
-set /a LINE=0
-setlocal ENABLEDELAYEDEXPANSION
-for /F "delims=" %%i in (.\libraries\install.cmd) do (
-	set /a LINE=!LINE!+1
-	if "%%i" == ":: ----------Certificate----------" (
-		goto :LOOP_BREAK_1
-	)
-)
-setlocal DISABLEDELAYEDEXPANSION
-:LOOP_BREAK_1
-call ".\libraries\split.exe" -l %LINE% -d ".\libraries\install.cmd" ".\out\INSTALL_TEMP" >nul 2>nul
 call certutil -encode ".\libraries\WSA.cer" ".\libraries\WSA.pem" >nul 2>nul
 del /f /q ".\libraries\WSA.cer" >nul 2>nul
-del /f /q ".\libraries\cert.cmd" >nul 2>nul
-for /F "delims=" %%i in (.\libraries\WSA.pem) do (
-	echo echo %%i^>^>".\WSA.pem">>".\libraries\cert.cmd"
-)
+%PS% "Get-Content '.\libraries\install.cmd'|foreach{if($_ -eq ':: ----------Certificate----------'){Get-Content '.\libraries\WSA.pem'|foreach{'echo {0}>>\".\WSA.pem\"' -f $_}}else{$_}}" >".\out\install.cmd" 2>nul
 del /f /q ".\libraries\WSA.pem" >nul 2>nul
-copy /b ".\out\INSTALL_TEMP00"+".\libraries\cert.cmd" ".\out\install.cmd" >nul 2>nul
-del /f /q ".\out\INSTALL_TEMP00" >nul 2>nul
-del /f /q ".\libraries\cert.cmd" >nul 2>nul
-for /F "delims=" %%i in ('%PS% "(Get-ChildItem '.\out' INSTALL_TEMP*).Name"') do (
-	copy /b ".\out\install.cmd"+".\out\%%i" ".\out\install.cmd" >nul 2>nul
-	del /f /q ".\out\%%i" >nul 2>nul
-)
 if not "%~1" == "" (
 	move /y "out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" "%~1" >nul 2>nul
 	set out=%~1
