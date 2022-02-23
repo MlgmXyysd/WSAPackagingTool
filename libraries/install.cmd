@@ -32,6 +32,8 @@ if not %IS_ADMIN% == "am_admin" (
 	goto :EOF
 )
 if not exist "%PACKAGE%" (
+	echo "File Submitted: " %PACKAGE%
+	echo "If there are spaces in the path to the MsixBundle be sure to remove them and try again."
 	echo [#] Error: You need specify a valid Msixbundle package.
 	goto :EXIT
 )
