@@ -3,12 +3,41 @@
 :: Copyright (C) 2002-2022 Jaida Wu (MlgmXyysd) <mlgmxyysd@meowcat.org> All Rights Reserved.
 ::
 title Unpack - WSAPackagingTool - MlgmXyysd
-echo Unpack - WSAPackagingTool v1.1 By MlgmXyysd
+echo Unpack - WSAPackagingTool v1.2 By MlgmXyysd
 echo https://github.com/WSA-Community/WSAPackagingTool
 echo *********************************************
 echo.
+echo [-] Initializing...
+set ARCH_X64=
+if /i "%PROCESSOR_ARCHITECTURE%" == "AMD64" set ARCH_X64=true
+if /i "%PROCESSOR_ARCHITECTURE%" == "IA64" set ARCH_X64=true
+if /i "%PROCESSOR_ARCHITECTURE%" == "X64" set ARCH_X64=true
+if /i "%PROCESSOR_ARCHITECTURE%" == "EM64T" set ARCH_X64=true
+if defined ARCH_X64 (
+	set LIB_PATH=x64
+) else (
+	if /i "%PROCESSOR_ARCHITECTURE%" == "X86" (
+		set LIB_PATH=x86
+	) else (
+		if /i "%PROCESSOR_ARCHITECTURE%" == "ARM64" (
+			set LIB_PATH=arm64
+		) else (
+			if /i "%PROCESSOR_ARCHITECTURE%" == "ARM" (
+				echo [*] Warning: ARM architecture detected, but not implemented.
+				echo [*] Warning: Attempt to use x86, which may cause unknown problems.
+				:: set LIB_PATH=arm
+				set LIB_PATH=x86
+			) else (
+				echo [*] Warning: Unknown system architecture.
+				echo [*] Warning: Attempt to use x86, which may cause unknown problems.
+				echo [*] Warning: Please send feedback this architecture to Issues: %PROCESSOR_ARCHITECTURE%
+				set LIB_PATH=x86
+			)
+		)
+	)
+)
 cd /d "%~dp0"
-if not exist ".\libraries\makeappx.exe" (
+if not exist ".\libraries\%LIB_PATH%\makeappx.exe" (
 	echo [#] Error: MakeAppx not found.
 	goto :EXIT
 )
@@ -38,7 +67,7 @@ echo [-] Cleaning temp file...
 rd /s /q ".\temp" >nul 2>nul
 mkdir ".\temp" >nul 2>nul
 echo [-] Extracting msixbundle...
-call ".\libraries\makeappx.exe" unbundle /p "%~1" /d temp
+call ".\libraries\%LIB_PATH%\makeappx.exe" unbundle /p "%~1" /d temp
 if not exist ".\temp\AppxMetadata\AppxBundleManifest.xml" (
 	echo [#] Error: Malformed msixbundle.
 	goto :LATE_CLEAN
@@ -60,7 +89,7 @@ for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBund
 		echo [#] Error: Incomplete Msixbundle package.
 		goto :LATE_CLEAN
 	)
-	call ".\libraries\makeappx.exe" unpack /p ".\temp\%%i" /d temp\%%i_ext
+	call ".\libraries\%LIB_PATH%\makeappx.exe" unpack /p ".\temp\%%i" /d temp\%%i_ext
 	del /f /q ".\temp\%%i" >nul 2>nul
 )
 echo [*] Now you can do you what you want to do in "temp".

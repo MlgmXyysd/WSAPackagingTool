@@ -7,6 +7,35 @@ echo Repack - WSAPackagingTool v1.1 By MlgmXyysd
 echo https://github.com/WSA-Community/WSAPackagingTool
 echo *********************************************
 echo.
+echo [-] Initializing...
+set ARCH_X64=
+if /i "%PROCESSOR_ARCHITECTURE%" == "AMD64" set ARCH_X64=true
+if /i "%PROCESSOR_ARCHITECTURE%" == "IA64" set ARCH_X64=true
+if /i "%PROCESSOR_ARCHITECTURE%" == "X64" set ARCH_X64=true
+if /i "%PROCESSOR_ARCHITECTURE%" == "EM64T" set ARCH_X64=true
+if defined ARCH_X64 (
+	set LIB_PATH=x64
+) else (
+	if /i "%PROCESSOR_ARCHITECTURE%" == "X86" (
+		set LIB_PATH=x86
+	) else (
+		if /i "%PROCESSOR_ARCHITECTURE%" == "ARM64" (
+			set LIB_PATH=arm64
+		) else (
+			if /i "%PROCESSOR_ARCHITECTURE%" == "ARM" (
+				echo [*] Warning: ARM architecture detected, but not implemented.
+				echo [*] Warning: Attempt to use x86, which may cause unknown problems.
+				:: set LIB_PATH=arm
+				set LIB_PATH=x86
+			) else (
+				echo [*] Warning: Unknown system architecture.
+				echo [*] Warning: Attempt to use x86, which may cause unknown problems.
+				echo [*] Warning: Please send feedback this architecture to Issues: %PROCESSOR_ARCHITECTURE%
+				set LIB_PATH=x86
+			)
+		)
+	)
+)
 cd /d "%~dp0"
 mkdir ".\out" >nul 2>nul
 del /f /q ".\libraries\WSA.cer" >nul 2>nul
@@ -14,11 +43,11 @@ if not exist ".\temp\AppxMetadata\AppxBundleManifest.xml" (
 	echo [#] Error: You need do unpack first.
 	goto :EXIT
 )
-if not exist ".\libraries\signtool.exe" (
+if not exist ".\libraries\%LIB_PATH%\signtool.exe" (
 	echo [#] Error: Signtool not found.
 	goto :EXIT
 )
-if not exist ".\libraries\makeappx.exe" (
+if not exist ".\libraries\%LIB_PATH%\makeappx.exe" (
 	echo [#] Error: MakeAppx not found.
 	goto :EXIT
 )
@@ -71,15 +100,15 @@ for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBund
 		echo [#] Error: Incomplete unpack project.
 		goto :LATE_CLEAN
 	)
-	call ".\libraries\makeappx.exe" pack /o /p ".\temp\%%i" /d temp\%%i_ext
+	call ".\libraries\%LIB_PATH%\makeappx.exe" pack /o /p ".\temp\%%i" /d temp\%%i_ext
 	rd /s /q ".\temp\%%i_ext" >nul 2>nul
 )
 echo [-] Processing msix...
-for %%i in (.\temp\*.msix) do (call ".\libraries\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd "%%~i" >nul 2>nul)
+for %%i in (.\temp\*.msix) do (call ".\libraries\%LIB_PATH%\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd "%%~i" >nul 2>nul)
 echo [-] Creating msixbundle...
-call ".\libraries\makeappx.exe" bundle /o /bv %WSAVersion% /p "out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" /d temp
+call ".\libraries\%LIB_PATH%\makeappx.exe" bundle /o /bv %WSAVersion% /p "out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" /d temp
 echo [-] Processing msixbundle...
-call ".\libraries\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd ".\out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" >nul 2>nul
+call ".\libraries\%LIB_PATH%\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd ".\out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" >nul 2>nul
 echo [-] Generating installation utility...
 call certutil -encode ".\libraries\WSA.cer" ".\libraries\WSA.pem" >nul 2>nul
 del /f /q ".\libraries\WSA.cer" >nul 2>nul

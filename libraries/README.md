@@ -18,9 +18,10 @@ They can be obtained from [Windows Software Development Kit](https://developer.m
 ## Info
 
 Current binaries version information:
-- Windows SDK for Windows 11
-- Version: `10.0.22000.194`
-- Arch: `x86` `32-bit`
+- Windows SDK for Windows 11 22H2
+- Version: `10.0.22621.1`
+- Arch: `x64` `x86` `arm64`
+- Note: `arm` has not fully implemented.
 
 ## Notes
 

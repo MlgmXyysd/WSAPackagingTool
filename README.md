@@ -34,13 +34,18 @@ Allows you to modify WSA's Msixbundle and redistribute it.
 
 ## TO-DOs
 
-- [ ] Unpack & Repack: Automatically identify Msix and Msixbundle.
-- [ ] Libraries: Add multi architecture support.
-- [x] ~~Repack: Better way to generate installation utility instead of using Git Split.~~
+- [ ] Unpack & Repack: Automatically identify Msix and Msixbundle
+- [x] ~~Libraries: Add multi architecture support~~
+- [x] ~~Repack: Better way to generate installation utility instead of using Git Split~~
+- [ ] Repack: Don't remove work folder (`temp`)
+- [ ] PackagingTool: Add support for multi installation #7
 - [ ] PackagingTool: GUI
 
 ## Changelog
 
+- 1.2:
+	- Add multi architecture support
+	- Update prebuilt libraries
 - 1.1:
 	- Better way to generate installation utility instead of using Git Split
 - 1.0:
