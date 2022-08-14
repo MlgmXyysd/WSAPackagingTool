@@ -3,7 +3,7 @@
 :: Copyright (C) 2002-2022 Jaida Wu (MlgmXyysd) <mlgmxyysd@meowcat.org> All Rights Reserved.
 ::
 title Repack - WSAPackagingTool - MlgmXyysd
-echo Repack - WSAPackagingTool v1.1 By MlgmXyysd
+echo Repack - WSAPackagingTool v1.3 By MlgmXyysd
 echo https://github.com/WSA-Community/WSAPackagingTool
 echo *********************************************
 echo.
@@ -37,7 +37,6 @@ if defined ARCH_X64 (
 	)
 )
 cd /d "%~dp0"
-mkdir ".\out" >nul 2>nul
 del /f /q ".\libraries\WSA.cer" >nul 2>nul
 if not exist ".\temp\AppxMetadata\AppxBundleManifest.xml" (
 	echo [#] Error: You need do unpack first.
@@ -69,11 +68,11 @@ for /F "delims=" %%i in ('%PS% "[xml]$p = Get-Content .\temp\AppxMetadata\AppxBu
 for /F "delims=" %%i in ('%PS% "[xml]$p = Get-Content .\temp\AppxMetadata\AppxBundleManifest.xml; $p.Bundle.Identity.Version"') do (set WSAVersion=%%i)
 if not "%WSAName%" == "MicrosoftCorporationII.WindowsSubsystemForAndroid" (
 	echo [#] Error: Package unpack project is not WSA.
-	goto :LATE_CLEAN
+	goto :EXIT
 )
 if not "%WSAPublisher%" == "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" (
 	echo [#] Error: Package unpack project is provided by unauthenticated publisher.
-	goto :LATE_CLEAN
+	goto :EXIT
 )
 if not exist ".\libraries\WSA.pfx" (
 	goto :CERT_NOT_FOUND
@@ -93,20 +92,25 @@ if not exist ".\libraries\WSA.cer" (
 	del /f /q ".\libraries\WSA.pfx" >nul 2>nul
 	goto :CERT_NOT_FOUND
 )
+echo [-] Cleaning temp file...
+rd /s /q ".\out" >nul 2>nul
+mkdir ".\out\temp" >nul 2>nul
+echo [-] Copying files...
+xcopy /e ".\temp\" ".\out\temp\"
 echo [-] Creating msix...
-for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\temp\AppxMetadata\AppxBundleManifest.xml;$p.Bundle.Packages.Package.FileName"') do (
+for /F "delims=" %%i in ('%PS% "[xml]$p=Get-Content .\out\temp\AppxMetadata\AppxBundleManifest.xml;$p.Bundle.Packages.Package.FileName"') do (
 	echo [-] Processing %%i...
-	if not exist ".\temp\%%i_ext\AppxManifest.xml" (
+	if not exist ".\out\temp\%%i_ext\AppxManifest.xml" (
 		echo [#] Error: Incomplete unpack project.
 		goto :LATE_CLEAN
 	)
-	call ".\libraries\%LIB_PATH%\makeappx.exe" pack /o /p ".\temp\%%i" /d temp\%%i_ext
-	rd /s /q ".\temp\%%i_ext" >nul 2>nul
+	call ".\libraries\%LIB_PATH%\makeappx.exe" pack /o /p ".\out\temp\%%i" /d out\temp\%%i_ext
+	rd /s /q ".\out\temp\%%i_ext" >nul 2>nul
 )
 echo [-] Processing msix...
-for %%i in (.\temp\*.msix) do (call ".\libraries\%LIB_PATH%\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd "%%~i" >nul 2>nul)
+for %%i in (.\out\temp\*.msix) do (call ".\libraries\%LIB_PATH%\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd "%%~i" >nul 2>nul)
 echo [-] Creating msixbundle...
-call ".\libraries\%LIB_PATH%\makeappx.exe" bundle /o /bv %WSAVersion% /p "out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" /d temp
+call ".\libraries\%LIB_PATH%\makeappx.exe" bundle /o /bv %WSAVersion% /p "out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" /d out\temp
 echo [-] Processing msixbundle...
 call ".\libraries\%LIB_PATH%\signtool.exe" sign /fd sha256 /a /f ".\libraries\WSA.pfx" /p mlgmxyysd ".\out\%WSAName%_%WSAVersion%_repack_mlgmxyysd.msixbundle" >nul 2>nul
 echo [-] Generating installation utility...
@@ -124,7 +128,7 @@ echo [*] Done, new package is "%out%".
 goto :LATE_CLEAN
 :LATE_CLEAN
 pause
-rd /s /q ".\temp" >nul 2>nul
+rd /s /q ".\out\temp" >nul 2>nul
 goto :EOF
 :EXIT
 pause

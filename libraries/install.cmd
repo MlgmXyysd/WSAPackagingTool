@@ -3,7 +3,7 @@
 :: Copyright (C) 2002-2022 Jaida Wu (MlgmXyysd) <mlgmxyysd@meowcat.org> All Rights Reserved.
 ::
 title Install - WSAPackagingTool - MlgmXyysd
-echo Install - WSAPackagingTool v1.2 By MlgmXyysd
+echo Install - WSAPackagingTool v1.3 By MlgmXyysd
 echo https://github.com/WSA-Community/WSAPackagingTool
 echo *********************************************
 echo.

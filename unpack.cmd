@@ -3,7 +3,7 @@
 :: Copyright (C) 2002-2022 Jaida Wu (MlgmXyysd) <mlgmxyysd@meowcat.org> All Rights Reserved.
 ::
 title Unpack - WSAPackagingTool - MlgmXyysd
-echo Unpack - WSAPackagingTool v1.2 By MlgmXyysd
+echo Unpack - WSAPackagingTool v1.3 By MlgmXyysd
 echo https://github.com/WSA-Community/WSAPackagingTool
 echo *********************************************
 echo.
@@ -57,11 +57,11 @@ if not "%errorlevel%" == "9009" (
 setlocal DISABLEDELAYEDEXPANSION
 if not exist "%~1" (
 	echo [#] Error: You need specify a valid Msixbundle package.
-	goto :LATE_CLEAN
+	goto :EXIT
 )
 if /i not "%~x1" == ".msixbundle" (
 	echo [#] Error: File is not a Msixbundle package.
-	goto :LATE_CLEAN
+	goto :EXIT
 )
 echo [-] Cleaning temp file...
 rd /s /q ".\temp" >nul 2>nul
